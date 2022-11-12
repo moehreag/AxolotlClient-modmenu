@@ -1,0 +1,26 @@
+
+mods=Mods
+modmenu=Modmenu Options
+mods.tooltip=Open Mods List
+open_options=Open Options...
+open_options.tooltip=Click here to view this mods' Details!
+modmenu.configure=Configure...
+modmenu.configure.tooltip=Open this mods' config screen.
+modmenu.homepage=Website
+modmenu.homepage.tooltip=Open this mods' website.
+modmenu.sources=Sources
+modmenu.sources.tooltip=Go to this mods' source repo.
+modmenu.license=License:
+modmenu.showlibraries=Show Libraries
+modmenu.showlibraries.tooltip=Whether to show libraries in the mod list or not.
+modmenu.loaded_from=This mod is loaded from:
+modmenu.client=Client
+modmenu.library=Library
+modmenu.deprecated=Deprecated
+modmenu.vendor=Vendor:
+modmenu.contributorsTitle=Brought to you by:
+modmenu.author=(Author)
+modmenu.contributor=(Contributor)
+modmenu.sorting=Sort Order
+ascending=Ascending
+descending=Descending

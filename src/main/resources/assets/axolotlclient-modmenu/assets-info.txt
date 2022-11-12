@@ -1,0 +1,4 @@
+Credits + Copyright TerraformersMC, MIT License.
+License Information: https://github.com/TerraformersMC/ModMenu/blob/3c79724251461576f138c566eb3d4de05d3ea200/LICENSE
+
+https://github.com/TerraformersMC/ModMenu/tree/1.19/src/main/resources/assets/modmenu
