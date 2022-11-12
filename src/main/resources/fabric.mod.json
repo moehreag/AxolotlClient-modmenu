@@ -12,7 +12,7 @@
     "sources": "https://github.com/moehreag/AxolotlClient-modmenu"
   },
   "license": "LGPL-3.0-or-later",
-  "icon": "assets/axolotlclient/icon.png",
+  "icon": "assets/axolotlclient-modmenu/icon.png",
   "environment": "*",
   "entrypoints": {
     "axolotlclient.module": [
