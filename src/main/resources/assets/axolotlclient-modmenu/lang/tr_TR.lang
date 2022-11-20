@@ -1,0 +1,26 @@
+
+mods=Modlar
+modmenu=Modmenü Ayarları
+mods.tooltip=Mod Listesini Aç
+open_options=Ayarları Aç...
+open_options.tooltip=Bu mod'un detaylayrını görmek için buraya tıklayın!
+modmenu.configure=Yapılandır...
+modmenu.configure.tooltip=Bu mod'un yapılandırma ekranını aç.
+modmenu.homepage=Websitesi
+modmenu.homepage.tooltip=Bu mod'un websitesi.
+modmenu.sources=Kaynak
+modmenu.sources.tooltip=Bu mod'un kaynak deposuna git.
+modmenu.license=Lisans:
+modmenu.showlibraries=Kütüphaneleri Göster
+modmenu.showlibraries.tooltip=Mod listesinde kütüphaneler gösterilmeli mi değil mi.
+modmenu.loaded_from=Bu mod buradan yükleniyor:
+modmenu.client=Client
+modmenu.library=Kütüphane
+modmenu.deprecated=Kullanılmayan
+modmenu.vendor=Veren:
+modmenu.contributorsTitle=Size sunan:
+modmenu.author=(Yaratıcı)
+modmenu.contributor=(Katılımcı)
+modmenu.sorting=Sıralama Düzeni
+ascending=Artan
+descending=Azalan
