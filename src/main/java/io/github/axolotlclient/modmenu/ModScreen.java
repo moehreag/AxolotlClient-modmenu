@@ -128,7 +128,7 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
             case 4:
                 MinecraftClient.getInstance().openScreen(
                         new ConfirmChatLinkScreen(this, container.getMetadata().getContact().get("issues").orElseThrow(RuntimeException::new),
-                                342561, true));
+                                345243, true));
         }
     }
 
@@ -143,6 +143,12 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
         } else if (id==342561) {
             if (b) {
                 OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("sources").orElseThrow(RuntimeException::new)));
+            }
+
+            this.client.openScreen(this);
+        } else if (id==345243) {
+            if (b) {
+                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("issues").orElseThrow(RuntimeException::new)));
             }
 
             this.client.openScreen(this);
