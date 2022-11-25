@@ -47,7 +47,7 @@ public class ModInfoList extends EntryListWidget {
 
     @Override
     protected void renderList(int x, int y, int mouseX, int mouseY) {
-        Util.applyScissor(rect);
+        Util.applyScissor(rect.x, rect.y, rect.width, rect.height);
         super.renderList(x, y, mouseX, mouseY);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }

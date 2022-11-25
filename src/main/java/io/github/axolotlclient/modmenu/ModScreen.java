@@ -62,7 +62,6 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
 
         if(container.getMetadata().getContact().get("sources").isPresent()) {
             ButtonWidget sources = new ButtonWidget(3, iconPos.x - iconPos.width / 2, iconPos.y + iconPos.height + (factory != null ? 65 : 40), iconPos.width * 2, 20, I18n.translate("modmenu.sources"));
-            //sources.active = container.getMetadata().getContact().get("sources").isPresent();
             this.buttons.add(sources);
         } else {
             ButtonWidget issues = new ButtonWidget(4, iconPos.x - iconPos.width / 2, iconPos.y + iconPos.height + (factory != null ? 65 : 40), iconPos.width * 2, 20, I18n.translate("modmenu.issues"));

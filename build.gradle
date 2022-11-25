@@ -57,8 +57,8 @@ dependencies {
  		exclude module: "legacy-fabric-entity-events-v1"
  	}
 
-	modApi("io.github.axolotlclient:AxolotlClient-mod:2.2.2+1.8.9")
-	modApi include("io.github.axolotlclient:AxolotlClient-config:1.0.12-beta.3+1.8.9")
+	modImplementation("io.github.axolotlclient:AxolotlClient-mod:2.2.4+1.8.9")
+	//modApi include("io.github.axolotlclient:AxolotlClient-config:1.0.12+1.8.9")
 
 	if (lwjgl2) {
 		if (currentOs.contains("mac")) {
