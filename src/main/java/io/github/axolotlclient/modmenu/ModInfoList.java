@@ -1,5 +1,6 @@
 package io.github.axolotlclient.modmenu;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.axolotlclient.modules.hud.util.Rectangle;
 import io.github.axolotlclient.util.Util;
 import net.fabricmc.api.EnvType;
@@ -8,10 +9,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.EntryListWidget;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.Texts;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -52,12 +57,118 @@ public class ModInfoList extends EntryListWidget {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
+    @Override
+    public void render(int mouseX, int mouseY, float delta){
+        if (this.visible) {
+
+            this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+            this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+            bufferBuilder.vertex(this.xStart, yEnd, 0.0)
+                    .texture(0.0, (float)yEnd / 32.0F)
+                    .color(64, 64, 64, 255)
+                    .next();
+            bufferBuilder.vertex(this.xStart + this.width, yEnd, 0.0)
+                    .texture((float)this.width / 32.0F, (float)yEnd / 32.0F)
+                    .color(64, 64, 64, 255)
+                    .next();
+            bufferBuilder.vertex(this.xStart + this.width, yStart, 0.0)
+                    .texture((float)this.width / 32.0F, (float)yStart / 32.0F)
+                    .color(64, 64, 64, 255)
+                    .next();
+            bufferBuilder.vertex(this.xStart, yStart, 0.0)
+                    .texture(0.0, (float)yStart / 32.0F)
+                    .color(64, 64, 64, 255)
+                    .next();
+            tessellator.draw();
+
+            GlStateManager.enableDepthTest();
+            GlStateManager.pushMatrix();
+            GlStateManager.translatef(0, 0, 1F);
+            this.renderBackground();
+            this.lastMouseX = mouseX;
+            this.lastMouseY = mouseY;
+            int i = this.getScrollbarPosition();
+            int j = i + 6;
+            this.capYPosition();
+            GlStateManager.disableLighting();
+            GlStateManager.disableFog();
+            int k = this.xStart + this.width / 2 - 125;
+            int l = this.yStart + 4 - (int)this.scrollAmount;
+
+            GlStateManager.enableTexture();
+
+            this.renderList(k, l, mouseX, mouseY);
+
+            int m = 4;
+            GlStateManager.disableDepthTest();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFuncSeparate(770, 771, 0, 1);
+            GlStateManager.disableAlphaTest();
+            GlStateManager.shadeModel(7425);
+            GlStateManager.disableTexture();
+            bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+            bufferBuilder.vertex(this.xStart, this.yStart + m, 0.0).texture(0.0, 1.0).color(0, 0, 0, 0).next();
+            bufferBuilder.vertex(this.xEnd, this.yStart + m, 0.0).texture(1.0, 1.0).color(0, 0, 0, 0).next();
+            bufferBuilder.vertex(this.xEnd, this.yStart, 0.0).texture(1.0, 0.0).color(0, 0, 0, 255).next();
+            bufferBuilder.vertex(this.xStart, this.yStart, 0.0).texture(0.0, 0.0).color(0, 0, 0, 255).next();
+            Tessellator.getInstance().draw();
+            bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+            bufferBuilder.vertex(this.xStart, this.yEnd, 0.0).texture(0.0, 1.0).color(0, 0, 0, 255).next();
+            bufferBuilder.vertex(this.xEnd, this.yEnd, 0.0).texture(1.0, 1.0).color(0, 0, 0, 255).next();
+            bufferBuilder.vertex(this.xEnd, this.yEnd - m, 0.0).texture(1.0, 0.0).color(0, 0, 0, 0).next();
+            bufferBuilder.vertex(this.xStart, this.yEnd - m, 0.0).texture(0.0, 0.0).color(0, 0, 0, 0).next();
+            Tessellator.getInstance().draw();
+
+            int n = this.getMaxScroll();
+            if (n > 0) {
+                int o = (this.yEnd - this.yStart) * (this.yEnd - this.yStart) / this.getMaxPosition();
+                o = MathHelper.clamp(o, 32, this.yEnd - this.yStart - 8);
+                int p = (int)this.scrollAmount * (this.yEnd - this.yStart - o) / n + this.yStart;
+                if (p < this.yStart) {
+                    p = this.yStart;
+                }
+                GlStateManager.disableTexture();
+
+                bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferBuilder.vertex(i, this.yEnd, 0.0).texture(0.0, 1.0).color(0, 0, 0, 255).next();
+                bufferBuilder.vertex(j, this.yEnd, 0.0).texture(1.0, 1.0).color(0, 0, 0, 255).next();
+                bufferBuilder.vertex(j, this.yStart, 0.0).texture(1.0, 0.0).color(0, 0, 0, 255).next();
+                bufferBuilder.vertex(i, this.yStart, 0.0).texture(0.0, 0.0).color(0, 0, 0, 255).next();
+                tessellator.draw();
+                bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferBuilder.vertex(i, (p + o), 0.0).texture(0.0, 1.0).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex(j, (p + o), 0.0).texture(1.0, 1.0).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex(j, p, 0.0).texture(1.0, 0.0).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex(i, p, 0.0).texture(0.0, 0.0).color(128, 128, 128, 255).next();
+                tessellator.draw();
+                bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferBuilder.vertex(i, (p + o - 1), 0.0).texture(0.0, 1.0).color(192, 192, 192, 255).next();
+                bufferBuilder.vertex((j - 1), (p + o - 1), 0.0).texture(1.0, 1.0).color(192, 192, 192, 255).next();
+                bufferBuilder.vertex((j - 1), p, 0.0).texture(1.0, 0.0).color(192, 192, 192, 255).next();
+                bufferBuilder.vertex(i, p, 0.0).texture(0.0, 0.0).color(192, 192, 192, 255).next();
+                tessellator.draw();
+            }
+
+            GlStateManager.enableTexture();
+            GlStateManager.shadeModel(7424);
+            GlStateManager.enableAlphaTest();
+            GlStateManager.popMatrix();
+            GlStateManager.disableBlend();
+        }
+    }
+
     public static ModInfoList create(int x, int y, int width, int height, ModContainer container){
         ModInfoList list = new ModInfoList(MinecraftClient.getInstance(), width, height, 0, 0, 10);
 
         list.xStart = x;
         list.xEnd = x+width;
         list.yStart = y;
+        list.renderHeader = false;
         list.yEnd = y+height;
         list.rect = new Rectangle(x, y, width, height);
 
