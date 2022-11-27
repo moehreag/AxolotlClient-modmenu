@@ -70,19 +70,19 @@ public class ModInfoList extends EntryListWidget {
             bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
             bufferBuilder.vertex(this.xStart, yEnd, 0.0)
                     .texture(0.0, (float)yEnd / 32.0F)
-                    .color(64, 64, 64, 255)
+                    .color(32, 32, 32, 255)
                     .next();
             bufferBuilder.vertex(this.xStart + this.width, yEnd, 0.0)
                     .texture((float)this.width / 32.0F, (float)yEnd / 32.0F)
-                    .color(64, 64, 64, 255)
+                    .color(32, 32, 32, 255)
                     .next();
             bufferBuilder.vertex(this.xStart + this.width, yStart, 0.0)
                     .texture((float)this.width / 32.0F, (float)yStart / 32.0F)
-                    .color(64, 64, 64, 255)
+                    .color(32, 32, 32, 255)
                     .next();
             bufferBuilder.vertex(this.xStart, yStart, 0.0)
                     .texture(0.0, (float)yStart / 32.0F)
-                    .color(64, 64, 64, 255)
+                    .color(32, 32, 32, 255)
                     .next();
             tessellator.draw();
 
