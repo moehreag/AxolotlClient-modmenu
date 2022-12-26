@@ -16,9 +16,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -94,7 +93,7 @@ public class Util {
                 } else if (metadata.getId().equals("minecraft")) {
                     path = modMenu.findPath("assets/" + AxolotlClientModmenu.MOD_ID + "/mc_icon.png").orElseThrow(UnknownError::new);
                 } else {
-                    path = modMenu.findPath("assets/" + AxolotlClientModmenu.MOD_ID + "/unknown_icon.png").orElseThrow(UnknownError::new);;
+                    path = modMenu.findPath("assets/" + AxolotlClientModmenu.MOD_ID + "/unknown_icon.png").orElseThrow(UnknownError::new);
                 }
             }
 
@@ -110,5 +109,37 @@ public class Util {
         } catch (Throwable t) {
             AxolotlClientModmenu.LOGGER.error("Invalid icon for mod {}", container.getMetadata().getName(), t);
         }
+    }
+
+    public static List<String> wrapLines(String text, int width, String separator){
+
+        StringBuilder newString = new StringBuilder();
+        StringBuilder newLine = new StringBuilder();
+
+        for (char c: text.toCharArray()){
+            if (MinecraftClient.getInstance().textRenderer.getStringWidth(newLine.toString()+c) < width){
+                newLine.append(c);
+            } else {
+                String trim;
+                if (newLine.toString().contains(separator)) {
+                    trim = newLine.substring(0, newLine.lastIndexOf(separator) + 1);
+                } else {
+                    trim = trimString(newLine.toString(), width);
+                }
+                newString.append(trim).append("\n");
+                newLine = new StringBuilder(newLine.substring(trim.length()));
+                newLine.append(c);
+            }
+        }
+        newString.append(newLine);
+
+        return Arrays.stream(newString.toString().split("\n")).collect(Collectors.toList());
+    }
+
+    private static String trimString(String s, int width){
+        if(MinecraftClient.getInstance().textRenderer.getStringWidth(s) > width){
+            return trimString(s.substring(0, s.length()-1), width);
+        }
+        return s;
     }
 }

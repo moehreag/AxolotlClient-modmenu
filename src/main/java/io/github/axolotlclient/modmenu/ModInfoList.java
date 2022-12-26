@@ -2,9 +2,9 @@ package io.github.axolotlclient.modmenu;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.axolotlclient.modules.hud.util.Rectangle;
-import io.github.axolotlclient.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModOrigin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
@@ -21,6 +21,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class ModInfoList extends EntryListWidget {
 
@@ -52,7 +54,7 @@ public class ModInfoList extends EntryListWidget {
 
     @Override
     protected void renderList(int x, int y, int mouseX, int mouseY) {
-        Util.applyScissor(rect.x, rect.y, rect.width, rect.height);
+        io.github.axolotlclient.util.Util.applyScissor(rect.x, rect.y, rect.width, rect.height);
         super.renderList(x, y, mouseX, mouseY);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
@@ -176,8 +178,8 @@ public class ModInfoList extends EntryListWidget {
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         List<Entry> entries = new ArrayList<>();
-        if(!io.github.axolotlclient.modmenu.Util.getDescription(container).isEmpty()) {
-            Texts.wrapLines(new LiteralText(io.github.axolotlclient.modmenu.Util.getDescription(container)), width - 25, textRenderer, false, false).forEach(text -> entries.add(new ModEntry(text)));
+        if(!Util.getDescription(container).isEmpty()) {
+            Texts.wrapLines(new LiteralText(Util.getDescription(container)), width - 25, textRenderer, false, false).forEach(text -> entries.add(new ModEntry(text)));
         }
         if(!entries.isEmpty()) {
             entries.add(ModEntry.createEmpty());
@@ -217,7 +219,29 @@ public class ModInfoList extends EntryListWidget {
         if(!container.getMetadata().getLicense().isEmpty()) {
             entries.add(new ModEntry(I18n.translate("modmenu.license")));
             container.getMetadata().getLicense().forEach(s -> entries.add(new ModEntry("        " + s)));
+            entries.add(ModEntry.createEmpty());
+        } else if(container.getMetadata().getId().equals("minecraft")){
+            entries.add(new ModEntry(I18n.translate("modmenu.license")));
+            entries.add(new ModEntry("        " + "Minecraft EULA"));
+            entries.add(ModEntry.createEmpty());
         }
+
+        entries.add(new ModEntry(I18n.translate("modmenu.mod_location")));
+
+        AtomicReference<ModOrigin> origin = new AtomicReference<>(container.getOrigin());
+
+        while (origin.get().getKind().equals(ModOrigin.Kind.NESTED)){
+            container.getContainingMod().ifPresent(container1 -> {
+                origin.set(container1.getOrigin());
+            });
+        }
+
+        List<String> locations = origin.get().getPaths().stream().map(path -> path.toFile().getAbsolutePath()).collect(Collectors.toList());
+        locations.forEach(s ->
+                Util.wrapLines(s,
+                                width - 25 - MinecraftClient.getInstance().textRenderer.getStringWidth("        "),
+                                "/")
+                .forEach(text -> entries.add(new ModEntry("        " + text))));
 
         entries.forEach(list::add);
         return list;

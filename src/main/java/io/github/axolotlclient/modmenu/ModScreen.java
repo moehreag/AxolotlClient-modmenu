@@ -24,6 +24,8 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
 
     private ModInfoList list;
 
+    private static final Identifier unknown_icon = new Identifier("axolotlclient-modmenu", "unknown_icon.png");
+
     private final Rectangle iconPos = new Rectangle(50, 50, 100, 100);
 
     public ModScreen(ModContainer container, Function<Screen, ? extends Screen> factory, Screen parent){
@@ -63,7 +65,7 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
         if(container.getMetadata().getContact().get("sources").isPresent()) {
             ButtonWidget sources = new ButtonWidget(3, iconPos.x - iconPos.width / 2, iconPos.y + iconPos.height + (factory != null ? 65 : 40), iconPos.width * 2, 20, I18n.translate("modmenu.sources"));
             this.buttons.add(sources);
-        } else {
+        } else if (container.getMetadata().getContact().get("issues").isPresent()) {
             ButtonWidget issues = new ButtonWidget(4, iconPos.x - iconPos.width / 2, iconPos.y + iconPos.height + (factory != null ? 65 : 40), iconPos.width * 2, 20, I18n.translate("modmenu.issues"));
             this.buttons.add(issues);
         }
@@ -94,7 +96,7 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
 
     public void bindIconTexture() {
         if (this.icon == null) {
-            icon = AxolotlClientModmenu.iconCache.get(container.getMetadata().getId());
+            icon = AxolotlClientModmenu.iconCache.getOrDefault(container.getMetadata().getId(), unknown_icon);
         }
         this.client.getTextureManager().bindTexture(this.icon);
     }
