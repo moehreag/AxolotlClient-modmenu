@@ -1,10 +1,11 @@
 package io.github.axolotlclient.modmenu;
 
 import io.github.axolotlclient.AxolotlClient;
-import io.github.axolotlclient.AxolotlclientConfig.AxolotlClientConfigManager;
-import io.github.axolotlclient.AxolotlclientConfig.DefaultConfigManager;
-import io.github.axolotlclient.AxolotlclientConfig.options.*;
-import io.github.axolotlclient.AxolotlclientConfig.screen.OptionsScreenBuilder;
+import io.github.axolotlclient.AxolotlClientConfig.AxolotlClientConfigManager;
+import io.github.axolotlclient.AxolotlClientConfig.DefaultConfigManager;
+import io.github.axolotlclient.AxolotlClientConfig.common.types.Identifiable;
+import io.github.axolotlclient.AxolotlClientConfig.options.*;
+import io.github.axolotlclient.AxolotlClientConfig.screen.OptionsScreenBuilder;
 import io.github.axolotlclient.modules.AbstractModule;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import net.fabricmc.loader.api.FabricLoader;
@@ -45,7 +46,7 @@ public class AxolotlClientModmenu extends AbstractModule {
 	public final BooleanOption showLibraries = new BooleanOption("modmenu.showlibraries", value -> {
 
 		if(initialized) {
-			AxolotlClientConfigManager.save(MOD_ID);
+			AxolotlClientConfigManager.getInstance().save(MOD_ID);
 			modIds.clear();
 			factories.clear();
 			mods.clearOptions();
@@ -53,21 +54,21 @@ public class AxolotlClientModmenu extends AbstractModule {
 		}
 	}, false);
 
-	public final EnumOption sorting = new EnumOption("modmenu.sorting", new String[]{"ascending", "descending"}, value -> {
+	public final EnumOption sorting = new EnumOption("modmenu.sorting", value -> {
 		if(initialized) {
-			AxolotlClientConfigManager.save(MOD_ID);
+			AxolotlClientConfigManager.getInstance().save(MOD_ID);
 			modIds.clear();
 			factories.clear();
 			mods.clearOptions();
 			constructList();
 		}
-	}, "ascending");
+	}, new String[]{"ascending", "descending"}, "ascending");
 
 	@Override
 	public void init() {
 		config.options.add(showLibraries);
 		config.options.add(sorting);
-		AxolotlClientConfigManager.registerConfig(MOD_ID, config, new DefaultConfigManager(MOD_ID, FabricLoader.getInstance().getConfigDir().resolve(MOD_ID+".json"), config.getCategories()));
+		AxolotlClientConfigManager.getInstance().registerConfig(MOD_ID, config, new DefaultConfigManager(MOD_ID, FabricLoader.getInstance().getConfigDir().resolve(MOD_ID+".json"), config.getCategories()));
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class AxolotlClientModmenu extends AbstractModule {
 
 			if(!initialized){
 				constructList();
-				AxolotlClient.CONFIG.general.addSubCategory(mods);
+				AxolotlClient.CONFIG.general.add(mods);
 				initialized = true;
 			}
 		}

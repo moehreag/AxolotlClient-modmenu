@@ -18,6 +18,9 @@
     "axolotlclient.module": [
       "io.github.axolotlclient.modmenu.AxolotlClientModmenu"
     ],
+    "module": [
+      "io.github.axolotlclient.modmenu.AxolotlClientModmenu"
+    ],
     "modmenu": [
       "io.github.axolotlclient.modmenu.AxolotlClientModmenuModmenuIntegration"
     ]

@@ -226,22 +226,26 @@ public class ModInfoList extends EntryListWidget {
             entries.add(ModEntry.createEmpty());
         }
 
-        entries.add(new ModEntry(I18n.translate("modmenu.mod_location")));
 
         AtomicReference<ModOrigin> origin = new AtomicReference<>(container.getOrigin());
 
-        while (origin.get().getKind().equals(ModOrigin.Kind.NESTED)){
-            container.getContainingMod().ifPresent(container1 -> {
-                origin.set(container1.getOrigin());
-            });
-        }
 
-        List<String> locations = origin.get().getPaths().stream().map(path -> path.toFile().getAbsolutePath()).collect(Collectors.toList());
-        locations.forEach(s ->
-                Util.wrapLines(s,
-                                width - 25 - MinecraftClient.getInstance().textRenderer.getStringWidth("        "),
-                                "/")
-                .forEach(text -> entries.add(new ModEntry("        " + text))));
+
+        if(!origin.get().getKind().equals(ModOrigin.Kind.UNKNOWN)) {
+
+            entries.add(new ModEntry(I18n.translate("modmenu.mod_location")));
+
+            while (origin.get().getKind().equals(ModOrigin.Kind.NESTED)){
+                container.getContainingMod().ifPresent(container1 -> origin.set(container1.getOrigin()));
+            }
+
+            List<String> locations = origin.get().getPaths().stream().map(path -> path.toFile().getAbsolutePath()).collect(Collectors.toList());
+            locations.forEach(s ->
+                    Util.wrapLines(s,
+                                    width - 25 - MinecraftClient.getInstance().textRenderer.getStringWidth("        "),
+                                    "/")
+                            .forEach(text -> entries.add(new ModEntry("        " + text))));
+        }
 
         entries.forEach(list::add);
         return list;

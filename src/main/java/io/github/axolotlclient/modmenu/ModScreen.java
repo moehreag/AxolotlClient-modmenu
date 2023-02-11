@@ -1,5 +1,6 @@
 package io.github.axolotlclient.modmenu;
 
+import io.github.axolotlclient.AxolotlClient;
 import io.github.axolotlclient.modules.hud.util.Rectangle;
 import io.github.axolotlclient.util.OSUtil;
 import net.fabricmc.loader.api.ModContainer;
@@ -137,19 +138,19 @@ public class ModScreen extends Screen implements IdentifibleBooleanConsumer {
     public void confirmResult(boolean b, int id) {
         if (id == 72834) {
             if (b) {
-                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("homepage").orElseThrow(RuntimeException::new)));
+                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("homepage").orElseThrow(RuntimeException::new)), AxolotlClient.LOGGER);
             }
 
             this.client.openScreen(this);
         } else if (id==342561) {
             if (b) {
-                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("sources").orElseThrow(RuntimeException::new)));
+                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("sources").orElseThrow(RuntimeException::new)), AxolotlClient.LOGGER);
             }
 
             this.client.openScreen(this);
         } else if (id==345243) {
             if (b) {
-                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("issues").orElseThrow(RuntimeException::new)));
+                OSUtil.getOS().open(URI.create(container.getMetadata().getContact().get("issues").orElseThrow(RuntimeException::new)), AxolotlClient.LOGGER);
             }
 
             this.client.openScreen(this);

@@ -1,8 +1,8 @@
 package io.github.axolotlclient.modmenu;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import io.github.axolotlclient.AxolotlclientConfig.options.GenericOption;
-import io.github.axolotlclient.AxolotlclientConfig.screen.widgets.GenericOptionWidget;
+import io.github.axolotlclient.AxolotlClientConfig.options.GenericOption;
+import io.github.axolotlclient.AxolotlClientConfig.screen.widgets.GenericOptionWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
